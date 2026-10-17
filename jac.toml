@@ -1,7 +1,7 @@
 [project]
-name = "empty"
-version = "0.0.1"
-description = "Empty Jac project - start from scratch"
+name = "casezero"
+version = "0.1.0"
+description = "CaseZero: a detective-noir mystery experience"
 entry-point = "main.jac"
 kind = "web-app"
 
@@ -9,7 +9,6 @@ kind = "web-app"
 [byllm.model]
 default_model = "${LLM_MODEL:-gpt-4o-mini}"
 api_key = "${OPENAI_API_KEY:-}"
-
 
 [jac-shadcn]
 style = "nova"
@@ -19,6 +18,7 @@ font = "inter"
 radius = "medium"
 menuAccent = "bold"
 menuColor = "default"
+
 [dependencies]
 [dependencies.npm]
 react = "^18.2.0"
@@ -58,8 +58,6 @@ typescript = "^5.3.3"
 tailwindcss = "4.3.3"
 "@tailwindcss/vite" = "4.3.3"
 
-
-
 [dev-dependencies]
 watchdog = ">=3.0.0"
 
@@ -72,16 +70,15 @@ plugins = ["tailwindcss()"]
 lib_imports = ["import tailwindcss from '@tailwindcss/vite'"]
 
 [client.app_meta_data]
-title = "A blank canvas"
-description = "A minimal jac-shadcn starter with the theme wired up and nothing in the way."
-keywords = "jac, starter, shadcn, template"
-author = "Blank canvas"
-theme_color = "#dc7702"
+title = "CaseZero | The Mystery Room"
+description = "Enter CaseZero and open the file on The Missing Prototype."
+keywords = "CaseZero, mystery, detective, noir"
+author = "CaseZero"
+theme_color = "#171811"
 og_type = "website"
-og_title = "A blank canvas"
-og_description = "A minimal jac-shadcn starter."
-og_site_name = "Blank canvas"
-
+og_title = "CaseZero | The Mystery Room"
+og_description = "A case is waiting. The truth leaves a trace."
+og_site_name = "CaseZero"
 
 [scale]
 [scale.microservices]

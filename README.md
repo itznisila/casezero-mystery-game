@@ -1,38 +1,27 @@
-# Empty
+# CaseZero
 
-A blank canvas — the minimal jac-shadcn starter the other templates are built on.
+CaseZero is a detective-noir mystery experience. Stage 1 provides a responsive landing page introducing the fictional case, **The Missing Prototype**, and a Start Investigation call to action. The investigation experience and game mechanics are intentionally not implemented in this stage.
 
-One client page, the violet theme wired up, and nothing else in the way. Start
-here when none of the other templates fit, and describe what you want to build.
+## Requirements
 
-## What you get
+- Jac 0.34.23
+- JacHammer project preview, or a local Jac installation for development
 
-- `main.jac` — a `cl { }` block with a single `def:pub app()` page (a centered
-  card). This is the whole app.
-- `components/ui/` — the two jac-shadcn primitives (`Button`, `Card`) the page
-  uses. Add more with `jac add --shadcn <name>`.
-- `styles/global.css` — semantic design tokens and the theme, already wired up.
-- `lib/utils.jac` — `cn()` for merging class names.
+## Run locally
 
-## Run it
+From the project root, install the configured project dependencies and start the Jac web app:
 
 ```bash
 jac install
-jac start --dev
+jac start --dev main.jac
 ```
 
-Open <http://localhost:8000>.
+Open the app URL reported by the Jac server. In JacHammer, the platform manages the preview server; use the project's Preview rather than starting a second server manually. The preview URL is provided by JacHammer and is not a fixed localhost address.
 
-## Where to go next
+## Check
 
-- **Add a page / routing** — create a `pages/` directory; files become routes
-  by convention. See `jac guide jac-cl-routing`.
-- **Add a backend** — create `services/foo.sv.jac` with `def:pub` functions;
-  each becomes a `POST /function/<name>` REST endpoint automatically, and data
-  hung off `root` persists with no database to set up (Jac stores the graph for
-  you — SQLite in `.jac/data/` by default, MongoDB via `MONGODB_URI`). See
-  `jac guide jac-sv-endpoints` and `jac guide jac-sv-persistence`.
-- **Add auth** — see `jac guide jac-sv-auth` and `jac guide jac-cl-auth`.
+```bash
+jac check main.jac
+```
 
-`AGENTS.md` lists the reference guides bundled with the compiler; read them
-before writing Jac — the syntax is easy to confuse with Python or JSX.
+`dist/` is generated output and is not the source of the application.

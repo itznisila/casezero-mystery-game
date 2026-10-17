@@ -1,2 +1,10 @@
-.jac/
+# Dependencies and generated output
 node_modules/
+dist/
+.jac/
+.jac-server.log
+
+# Local secrets
+.env
+.env.*
+!.env.example

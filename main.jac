@@ -1,7 +1,6 @@
-import from services.caseService { CaseFile, Clue, Suspect, getCase, discoverClue, interviewSuspect, accuseSuspect }
 import ".styles.global.css";
-import from .components.CaseZeroInvestigation { CaseZeroInvestigation }
+import from .components.CaseZeroLanding { CaseZeroLanding }
 
 def:pub app() -> JsxElement {
-    return <CaseZeroInvestigation />;
+    return <CaseZeroLanding />;
 }
