@@ -1,4 +1,5 @@
 import from ".CaseZeroShell" { CaseZeroPageContainer, CaseZeroShell }
+import from "@jac/runtime" { Link }
 import from ".CaseStatus" { CaseStatus }
 import from ".ui.card" { Card, CardHeader, CardTitle, CardContent }
 sv import from ..services.caseManager { PlayerCaseBriefing, InvestigationStartReceipt, get_missing_prototype_briefing, start_missing_prototype_investigation }
@@ -86,7 +87,7 @@ def:pub CaseBriefingScreen() -> JsxElement {
             </Card>
 
             {error_message != "" and <p role="alert" className="border border-destructive/40 bg-destructive/10 p-3 text-sm text-noir-ink">{error_message}</p>}
-            {receipt is not None and <div role="status" className="border border-primary/35 bg-noir-panel p-4 text-sm text-noir-ink">Investigation started. Session <span className="font-mono text-primary">{receipt.session_id}</span> is active.</div>}
+            {receipt is not None and <div role="status" className="border border-primary/35 bg-noir-panel p-4 text-sm text-noir-ink">Investigation started. Session <span className="font-mono text-primary">{receipt.session_id}</span> is active. <Link to={"/suspects/" + receipt.session_id} className="ml-2 underline text-primary">Review suspects</Link></div>}
             <div className="flex flex-wrap items-center gap-4 border-t border-noir-line pt-6">
                 <button type="button" onClick={start_investigation} disabled={starting or receipt is not None} className="h-12 w-full rounded-none border border-primary bg-primary px-7 font-semibold tracking-wide text-primary-foreground shadow-[0_0_32px_rgba(229,190,105,0.12)] transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto">
                     {"Investigation started" if receipt is not None else "Start Investigation"}<span aria-hidden="true" className="ml-3">{"✓" if receipt is not None else "→"}</span>

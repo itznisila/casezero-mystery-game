@@ -62,6 +62,16 @@ obj InvestigationStartReceipt {
     has message: str;
 }
 
+obj SuspectPublicProfile {
+    has id: str;
+    has name: str;
+    has role: str;
+    has profile: str;
+    has interview_started: bool;
+}
+
+glob _ACTIVE_SESSIONS: dict[str, InvestigationSession] = {};
+
 def:pub validate_case_data(case_data: MissingPrototypeCaseData) -> bool {
     if not case_data.is_valid() { return False; }
     if case_data.player_case.case_id != case_data.player_case.public_record.id { return False; }
@@ -99,7 +109,16 @@ def:pub get_missing_prototype_briefing() -> PlayerCaseBriefing {
 
 def:pub start_missing_prototype_investigation(session_id: str) -> InvestigationStartReceipt {
     session = initialize_session(missing_prototype_case_data, session_id);
+    if session_id in _ACTIVE_SESSIONS { raise ValueError("This investigation session ID is already in use."); }
+    _ACTIVE_SESSIONS[session_id] = session;
     return InvestigationStartReceipt(session_id=session.session_id, case_id=session.case_id, status=session.status, message="Investigation session initialized.");
+}
+
+def:pub get_suspect_overview(session_id: str) -> list[SuspectPublicProfile] {
+    if not (session_id in _ACTIVE_SESSIONS) { raise ValueError("Investigation session was not found."); }
+    session = _ACTIVE_SESSIONS[session_id];
+    if session.case_id != missing_prototype_case_data.player_case.case_id { raise ValueError("Investigation session does not match this case."); }
+    return [SuspectPublicProfile(id=suspect.id, name=suspect.name, role=suspect.role, profile=suspect.profile, interview_started=suspect.id in session.interviewed_suspect_ids) for suspect in missing_prototype_case_data.player_case.public_record.suspects];
 }
 
 def:pub get_missing_prototype_known_facts() -> PlayerCaseBriefing {
@@ -171,6 +190,7 @@ def:pub apply_investigation_action(session: InvestigationSession, command: Inves
         interviewed = session.interviewed_suspect_ids;
         if not (command.target_id in interviewed) { interviewed = interviewed + [command.target_id]; }
         next_session = _copy_session(session, session.discovered_evidence_ids, interviewed, session.visited_location_ids, session.timeline_accessed, session.resolved, session.interview_messages + [message], session.theories, session.actions + [_record_action(command)], session.accusation, session.status);
+        if session.session_id in _ACTIVE_SESSIONS { _ACTIVE_SESSIONS[session.session_id] = next_session; }
         return InvestigationTransition(accepted=True, message="Interview progress recorded.", session=next_session);
     }
 

@@ -57,6 +57,37 @@ test "returns the public briefing and starts a validated session receipt" {
     assert receipt.message != "";
 }
 
+test "suspect overview displays all canonical public profiles consistently" {
+    receipt = start_missing_prototype_investigation("stage12-profiles");
+    profiles = get_suspect_overview(receipt.session_id);
+    assert len(profiles) == 3;
+    assert profiles[0].id == "mara";
+    assert profiles[1].id == "eli";
+    assert profiles[2].id == "june";
+    for profile in profiles {
+        assert profile.name.strip() != "";
+        assert profile.role.strip() != "";
+        assert profile.profile.strip() != "";
+        assert not profile.interview_started;
+    }
+}
+
+test "suspect overview shows all canonical public profiles and live interview progress" {
+    receipt = start_missing_prototype_investigation("stage12-suspects");
+    initial_profiles = get_suspect_overview(receipt.session_id);
+    assert len(initial_profiles) == 3;
+    assert initial_profiles[0].id == "mara";
+    assert initial_profiles[0].role == "Research director";
+    assert not initial_profiles[0].interview_started;
+    assert not (missing_prototype_canonical_solution.explanation in initial_profiles[0].profile);
+    interview = InvestigationCommand(id="s-1", kind=InvestigationActionKind.INTERVIEW, actor_id="lead", created_at="21:40", target_id="mara", content="Where were you at 21:14?");
+    result = apply_investigation_action(_ACTIVE_SESSIONS[receipt.session_id], interview);
+    assert result.accepted;
+    updated_profiles = get_suspect_overview(receipt.session_id);
+    assert updated_profiles[0].interview_started;
+    assert not updated_profiles[1].interview_started;
+}
+
 test "initializes empty investigation state with player-safe briefing" {
     session = initialize_session(missing_prototype_case_data, "stage10-init");
     assert session.case_id == "case-001";
