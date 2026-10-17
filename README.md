@@ -35,7 +35,9 @@ Before writing or editing Jac, consult the release-matched guides bundled with t
 ## Security and data handling
 
 - Never commit credentials, API keys, access tokens, or real case data. `.env` and `.env.*` are ignored; keep only non-secret examples in `.env.example`.
-- In JacHammer, configure secrets through the IDE's Environment settings rather than source files. Do not assume an API key is available. No LLM integration is active in Stage 1.
+- In JacHammer, configure future provider credentials through the IDE's Environment settings and ask the project owner to supply their own key. Do not assume a key is available. For local development, `.env.example` documents the optional variable names only; `.env` and `.env.*` are ignored and must never contain committed values.
+- If a future approved stage adds AI, keep provider credentials on the Jac server and access them only through server-side configuration such as the existing `jac.toml` `${OPENAI_API_KEY:-}` interpolation. Never use `VITE_`-prefixed secret names, import secrets into client modules, return them from endpoints, or embed them in browser-visible configuration. Restart the managed preview after changing environment settings if required for the new values to load.
+- No LLM integration is active in Stage 1; this documentation does not configure a provider or call one.
 - Validate and bound user-provided values at the server boundary when future endpoints are introduced. Keep authorization checks server-side; do not treat client-side visibility as access control.
 - Use fictional identities and evidence. Do not put personal or confidential information in logs, prompts, fixtures, or screenshots.
 - Do not render untrusted strings as raw HTML. Preserve framework escaping and avoid logging secrets.
