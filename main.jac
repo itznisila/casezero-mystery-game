@@ -1,3 +1,15 @@
+import from services.caseManager {
+    get_investigation_session, get_investigation_dossier,
+    submit_investigation_action, reset_missing_prototype_investigation,
+    get_missing_prototype_briefing, start_missing_prototype_investigation,
+    get_suspect_overview, get_session_evidence_api,
+    InvestigationSession, InvestigationDossier, InvestigationCommand,
+    InvestigationStartReceipt, PlayerCaseBriefing, SuspectPublicProfile, EvidenceCollection
+}
+import from services.caseAgents {
+    interview_agent, evidence_analyst_agent, theory_coach_agent,
+    verdict_explainer_agent, InterviewReply, AgentBrief, LeadPlan
+}
 import from .components.CaseZeroLanding { CaseZeroLanding }
 import from .components.CaseBriefingScreen { CaseBriefingScreen }
 import from .components.SuspectOverviewScreen { SuspectOverviewScreen }

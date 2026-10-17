@@ -1,11 +1,10 @@
 import from ".CaseZeroShell" { CaseZeroPageContainer, CaseZeroShell }
-import from "@jac/runtime" { Link, useNavigate }
+import from "@jac/runtime" { Link }
 import from ".CaseStatus" { CaseStatus }
 import from ".ui.card" { Card, CardHeader, CardTitle, CardContent }
 sv import from ..services.caseManager { PlayerCaseBriefing, InvestigationStartReceipt, get_missing_prototype_briefing, start_missing_prototype_investigation }
 
 def:pub CaseBriefingScreen() -> JsxElement {
-    navigate = useNavigate();
     has briefing: PlayerCaseBriefing | None = None;
     has loading: bool = True;
     has error_message: str = "";
@@ -22,18 +21,18 @@ def:pub CaseBriefingScreen() -> JsxElement {
         loading = False;
     }
 
-    async def start_investigation {
+    async def start_investigation(e: MouseEvent) {
         if starting or briefing is None { return; }
         starting = True;
         error_message = "";
         try {
             session_id = "case-001-" + str(new(Date).getTime());
-            receipt = await start_missing_prototype_investigation(session_id);
-            navigate("/evidence/" + receipt.session_id);
+            started_case = await start_missing_prototype_investigation(session_id);
+            window.location.href = "/evidence/" + started_case.session_id;
         } except Exception {
             error_message = "The investigation could not be started. Your case briefing is still available.";
+            starting = False;
         }
-        starting = False;
     }
 
     if loading {
