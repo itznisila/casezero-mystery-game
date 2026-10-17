@@ -1,9 +1,10 @@
-import ".styles.global.css";
 import from .components.CaseZeroLanding { CaseZeroLanding }
 import from .components.CaseBriefingScreen { CaseBriefingScreen }
 import from .components.SuspectOverviewScreen { SuspectOverviewScreen }
 import from .components.EvidenceScreen { EvidenceScreen }
+import ".styles.global.css";
 import from "@jac/runtime" { Router, Routes, Route }
+
 
 def:pub app() -> JsxElement {
     return <Router><Routes>

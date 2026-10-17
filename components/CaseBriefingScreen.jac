@@ -1,10 +1,11 @@
 import from ".CaseZeroShell" { CaseZeroPageContainer, CaseZeroShell }
-import from "@jac/runtime" { Link }
+import from "@jac/runtime" { Link, useNavigate }
 import from ".CaseStatus" { CaseStatus }
 import from ".ui.card" { Card, CardHeader, CardTitle, CardContent }
 sv import from ..services.caseManager { PlayerCaseBriefing, InvestigationStartReceipt, get_missing_prototype_briefing, start_missing_prototype_investigation }
 
 def:pub CaseBriefingScreen() -> JsxElement {
+    navigate = useNavigate();
     has briefing: PlayerCaseBriefing | None = None;
     has loading: bool = True;
     has error_message: str = "";
@@ -28,6 +29,7 @@ def:pub CaseBriefingScreen() -> JsxElement {
         try {
             session_id = "case-001-" + str(new(Date).getTime());
             receipt = await start_missing_prototype_investigation(session_id);
+            navigate("/evidence/" + receipt.session_id);
         } except Exception {
             error_message = "The investigation could not be started. Your case briefing is still available.";
         }
@@ -55,7 +57,7 @@ def:pub CaseBriefingScreen() -> JsxElement {
     }
 
     return <CaseZeroShell><CaseZeroPageContainer>
-        <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col gap-6">
+        <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col gap-6">
             <div className="flex flex-wrap items-start justify-between gap-4 border-b border-noir-line pb-6">
                 <div>
                     <p className="font-mono text-[10px] tracking-[0.2em] text-primary/80">CASE FILE · {briefing.case_id}</p>
@@ -87,12 +89,11 @@ def:pub CaseBriefingScreen() -> JsxElement {
             </Card>
 
             {error_message != "" and <p role="alert" className="border border-destructive/40 bg-destructive/10 p-3 text-sm text-noir-ink">{error_message}</p>}
-            {receipt is not None and <div role="status" className="border border-primary/35 bg-noir-panel p-4 text-sm text-noir-ink">Investigation started. Session <span className="font-mono text-primary">{receipt.session_id}</span> is active. <Link to={"/suspects/" + receipt.session_id} className="ml-2 underline text-primary">Review suspects</Link></div>}
             <div className="flex flex-wrap items-center gap-4 border-t border-noir-line pt-6">
-                <button type="button" onClick={start_investigation} disabled={starting or receipt is not None} className="h-12 w-full rounded-none border border-primary bg-primary px-7 font-semibold tracking-wide text-primary-foreground shadow-[0_0_32px_rgba(229,190,105,0.12)] transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto">
-                    {"Investigation started" if receipt is not None else "Start Investigation"}<span aria-hidden="true" className="ml-3">{"✓" if receipt is not None else "→"}</span>
+                <button type="button" onClick={start_investigation} disabled={starting} className="h-12 w-full rounded-none border border-primary bg-primary px-7 font-semibold tracking-wide text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto">
+                    {"Opening investigation…" if starting else "Begin investigation"}<span aria-hidden="true" className="ml-3">→</span>
                 </button>
-                {starting and <span role="status" className="text-sm text-noir-muted">Opening the case file…</span>}
+                <span className="text-sm text-noir-muted">Four specialist advisors have rules-based fallbacks when no model key is configured.</span>
             </div>
         </div>
     </CaseZeroPageContainer></CaseZeroShell>;
