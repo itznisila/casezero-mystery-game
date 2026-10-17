@@ -18,7 +18,6 @@ font = "inter"
 radius = "medium"
 menuAccent = "bold"
 menuColor = "default"
-
 [dependencies]
 [dependencies.npm]
 react = "^18.2.0"
