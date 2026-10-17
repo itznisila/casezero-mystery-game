@@ -12,9 +12,10 @@ obj Suspect {
     has profile: str;
     has motive: str;
     has alibi: str;
+    has opportunity: str = "";
 
     def is_valid() -> bool {
-        return self.id.strip() != "" and self.name.strip() != "" and self.role.strip() != "";
+        return self.id.strip() != "" and self.name.strip() != "" and self.role.strip() != "" and self.profile.strip() != "" and self.motive.strip() != "" and self.alibi.strip() != "" and self.opportunity.strip() != "";
     }
 }
 
