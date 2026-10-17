@@ -1,15 +1,10 @@
 cl import from ".CaseActionButton" { CaseActionButton }
+cl import from "@jac/runtime" { Link }
 cl import from ".CaseFilePanel" { CaseFilePanel }
 cl import from ".CaseStatus" { CaseStatus }
 cl import from ".CaseZeroShell" { CaseZeroPageContainer, CaseZeroShell }
 
 def:pub CaseZeroLanding() -> JsxElement {
-    has started: bool = False;
-
-    def start_investigation(e: MouseEvent) {
-        started = True;
-    }
-
     return <CaseZeroShell>
         <CaseZeroPageContainer>
             <div className="relative z-10 flex flex-col items-start">
@@ -17,10 +12,11 @@ def:pub CaseZeroLanding() -> JsxElement {
                 <h1 className="max-w-2xl font-serif text-5xl font-medium leading-[1.02] tracking-[-0.035em] text-noir-ink sm:text-6xl md:text-7xl">Every answer leaves <span className="italic text-primary">a trace.</span></h1>
                 <p className="mt-7 max-w-lg text-base leading-7 text-noir-muted sm:text-lg">Step into CaseZero, a mystery waiting to be opened. Read the file. Follow the evidence. Decide what the city is hiding.</p>
                 <div className="mt-9 flex w-full flex-col items-start gap-4 sm:w-auto sm:flex-row sm:items-center">
-                    <CaseActionButton label="Start Investigation" onClick={start_investigation}>→</CaseActionButton>
-                    <span className="font-mono text-[10px] tracking-[0.14em] text-noir-muted/80">{ "CASE FILE 001 · THE MISSING PROTOTYPE" if started else "A CASEZERO ORIGINAL" }</span>
+                    <Link to="/briefing" className="inline-flex w-full sm:w-auto">
+                        <CaseActionButton label="Start Investigation" onClick={lambda (e: MouseEvent) {}} >→</CaseActionButton>
+                    </Link>
+                    <span className="font-mono text-[10px] tracking-[0.14em] text-noir-muted/80">CASE FILE 001 · THE MISSING PROTOTYPE</span>
                 </div>
-                {started and <p role="status" className="mt-5 border-l border-primary/50 pl-3 text-sm text-primary">The case file is prepared. Your investigation begins in the next chapter.</p>}
             </div>
             <div id="case-file" className="relative mx-auto w-full max-w-xl lg:mx-0">
                 <div aria-hidden="true" className="absolute -inset-4 rounded-[2rem] bg-primary/[0.07] blur-2xl" />

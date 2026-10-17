@@ -16,6 +16,47 @@ test "rejects invalid canonical case and empty session id" {
     }
 }
 
+test "provides canonical spoiler-safe briefing and starts a session" {
+    briefing = get_missing_prototype_briefing();
+    assert briefing.case_id == "case-001";
+    assert briefing.title == "The Missing Prototype";
+    assert len(briefing.objectives) == 3;
+    assert len(briefing.known_facts) > 0;
+    assert len(briefing.location_names) == 6;
+    assert len(briefing.suspect_ids) == 3;
+    assert not (missing_prototype_canonical_solution.explanation in briefing.briefing);
+    assert not (missing_prototype_canonical_solution.explanation in briefing.known_facts);
+
+    receipt = start_missing_prototype_investigation("stage11-brief-start");
+    assert receipt.session_id == "stage11-brief-start";
+    assert receipt.case_id == briefing.case_id;
+    assert receipt.status == "active";
+    assert receipt.message != "";
+
+    try {
+        start_missing_prototype_investigation(" ");
+        assert False, "blank session ID should be rejected";
+    } except ValueError {
+        assert True;
+    }
+}
+
+test "returns the public briefing and starts a validated session receipt" {
+    briefing = get_missing_prototype_briefing();
+    facts = get_missing_prototype_known_facts();
+    assert briefing.case_id == "case-001";
+    assert briefing.title == "The Missing Prototype";
+    assert len(briefing.objectives) == 3;
+    assert len(facts.known_facts) == 4;
+    assert not (missing_prototype_canonical_solution.explanation in facts.briefing);
+    assert not (missing_prototype_canonical_solution.explanation in briefing.briefing);
+    receipt = start_missing_prototype_investigation("stage11-start");
+    assert receipt.session_id == "stage11-start";
+    assert receipt.case_id == briefing.case_id;
+    assert receipt.status == "active";
+    assert receipt.message != "";
+}
+
 test "initializes empty investigation state with player-safe briefing" {
     session = initialize_session(missing_prototype_case_data, "stage10-init");
     assert session.case_id == "case-001";

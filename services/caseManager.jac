@@ -12,6 +12,7 @@ obj PlayerCaseBriefing {
     has title: str;
     has introduction: str;
     has briefing: str;
+    has known_facts: list[str];
     has objectives: list[str];
     has location_names: list[str];
     has location_ids: list[str];
@@ -54,6 +55,13 @@ obj InvestigationTransition {
     has session: InvestigationSession;
 }
 
+obj InvestigationStartReceipt {
+    has session_id: str;
+    has case_id: str;
+    has status: str;
+    has message: str;
+}
+
 def:pub validate_case_data(case_data: MissingPrototypeCaseData) -> bool {
     if not case_data.is_valid() { return False; }
     if case_data.player_case.case_id != case_data.player_case.public_record.id { return False; }
@@ -76,12 +84,27 @@ def:pub get_player_briefing(case_data: MissingPrototypeCaseData) -> PlayerCaseBr
         title=case_data.player_case.title,
         introduction=case_data.player_case.introduction,
         briefing=case_data.player_case.briefing,
+        known_facts=[item.summary for item in case_data.player_case.public_record.evidence],
         objectives=case_data.player_case.initial_objectives,
         location_names=[location.name for location in case_data.player_case.locations],
         location_ids=[location.id for location in case_data.player_case.locations],
         timeline_event_ids=[event.id for event in case_data.player_case.public_record.timeline],
         suspect_ids=[suspect.id for suspect in case_data.player_case.public_record.suspects]
     );
+}
+
+def:pub get_missing_prototype_briefing() -> PlayerCaseBriefing {
+    return get_player_briefing(missing_prototype_case_data);
+}
+
+def:pub start_missing_prototype_investigation(session_id: str) -> InvestigationStartReceipt {
+    session = initialize_session(missing_prototype_case_data, session_id);
+    return InvestigationStartReceipt(session_id=session.session_id, case_id=session.case_id, status=session.status, message="Investigation session initialized.");
+}
+
+def:pub get_missing_prototype_known_facts() -> PlayerCaseBriefing {
+    if not validate_case_data(missing_prototype_case_data) { raise ValueError("Case facts are unavailable because case data is invalid."); }
+    return get_player_briefing(missing_prototype_case_data);
 }
 
 def:pub initialize_session(case_data: MissingPrototypeCaseData, session_id: str) -> InvestigationSession {
