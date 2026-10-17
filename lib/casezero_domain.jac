@@ -1,6 +1,8 @@
 enum InvestigationActionKind: str {
     INSPECT = "inspect",
     INTERVIEW = "interview",
+    VISIT_LOCATION = "visit_location",
+    ACCESS_TIMELINE = "access_timeline",
     FORM_THEORY = "form_theory",
     ACCUSE = "accuse"
 }
