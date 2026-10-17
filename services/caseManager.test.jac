@@ -1,5 +1,31 @@
-import from lib.missing_prototype_case { missing_prototype_case_data, missing_prototype_canonical_solution }
 import from lib.casezero_domain { InvestigationActionKind }
+
+
+test "evidence screen starts empty then lists only discovered case evidence" {
+    receipt = start_missing_prototype_investigation("stage13-empty-discovery");
+    initial_evidence_state = get_session_evidence_api(receipt.session_id);
+    assert len(initial_evidence_state.discovered) == 0;
+    assert len(initial_evidence_state.available_ids) == 4;
+    assert not ("S-MARA-01" in initial_evidence_state.available_ids);
+
+    assert discover_session_evidence_api(receipt.session_id, "E-01");
+    after_discovery = get_session_evidence_api(receipt.session_id);
+    assert len(after_discovery.discovered) == 1;
+    assert after_discovery.discovered[0].id == "E-01";
+    assert after_discovery.discovered[0].title == "Archive access record";
+    assert after_discovery.discovered[0].detail != "";
+    assert not ("E-01" in after_discovery.available_ids);
+}
+
+test "evidence discovery is duplicate-safe and session-scoped" {
+    first_receipt = start_missing_prototype_investigation("stage13-first-session");
+    second_receipt = start_missing_prototype_investigation("stage13-second-session");
+    assert discover_session_evidence_api(first_receipt.session_id, "E-03");
+    assert not discover_session_evidence_api(first_receipt.session_id, "E-03");
+    assert len(get_session_evidence_api(first_receipt.session_id).discovered) == 1;
+    assert len(get_session_evidence_api(second_receipt.session_id).discovered) == 0;
+    assert not discover_session_evidence_api(first_receipt.session_id, "S-ELI-01");
+}
 
 test "rejects invalid canonical case and empty session id" {
     broken_data = missing_prototype_case_data;

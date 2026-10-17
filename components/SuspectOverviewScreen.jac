@@ -1,4 +1,5 @@
 import from "@jac/runtime" { useParams }
+import from "@jac/runtime" { Link }
 import from .CaseZeroShell { CaseZeroPageContainer, CaseZeroShell }
 import from .SuspectCard { SuspectCard }
 sv import from ..services.caseManager { SuspectPublicProfile, get_suspect_overview }
@@ -51,7 +52,7 @@ def:pub SuspectOverviewScreen() -> JsxElement {
                 <h1 className="mt-3 font-serif text-4xl leading-tight text-noir-ink sm:text-5xl">People of interest</h1>
                 <p className="mt-4 max-w-3xl text-base leading-7 text-noir-muted">Review each staff member's public background. Interview progress updates as you question them.</p>
             </header>
-            <p className="font-mono text-[10px] tracking-[0.14em] text-noir-muted/80">SESSION · {str(session_id)}</p>
+            <div className="flex flex-wrap items-center justify-between gap-4"><p className="font-mono text-[10px] tracking-[0.14em] text-noir-muted/80">SESSION · {str(session_id)}</p><Link to={"/evidence/" + str(session_id)} className="inline-flex min-h-11 items-center border border-primary px-5 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">Open evidence file</Link></div>
             <div className="grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {for suspect in suspects {<SuspectCard key={suspect.id} suspect={suspect} />}}
             </div>

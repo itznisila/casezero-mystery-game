@@ -6,6 +6,7 @@ import from lib.missing_prototype_case {
     PlayerCaseIntroduction, MissingPrototypeCaseData, missing_prototype_case,
     missing_prototype_canonical_solution, missing_prototype_case_data
 }
+import from services.evidenceService { initial_evidence, EvidenceItem }
 
 obj PlayerCaseBriefing {
     has case_id: str;
@@ -119,6 +120,34 @@ def:pub get_suspect_overview(session_id: str) -> list[SuspectPublicProfile] {
     session = _ACTIVE_SESSIONS[session_id];
     if session.case_id != missing_prototype_case_data.player_case.case_id { raise ValueError("Investigation session does not match this case."); }
     return [SuspectPublicProfile(id=suspect.id, name=suspect.name, role=suspect.role, profile=suspect.profile, interview_started=suspect.id in session.interviewed_suspect_ids) for suspect in missing_prototype_case_data.player_case.public_record.suspects];
+}
+
+obj EvidenceCollection {
+    has discovered: list[EvidenceItem];
+    has available_ids: list[str];
+}
+
+def:pub get_session_evidence_api(session_id: str) -> EvidenceCollection {
+    if not (session_id in _ACTIVE_SESSIONS) { raise ValueError("Investigation session was not found."); }
+    session = _ACTIVE_SESSIONS[session_id];
+    if session.case_id != missing_prototype_case_data.player_case.case_id { raise ValueError("Investigation session does not match this case."); }
+    items = [item for item in initial_evidence() if item.id in [record.id for record in session.case_record.evidence]];
+    return EvidenceCollection(
+        discovered=[item for item in items if item.id in session.discovered_evidence_ids],
+        available_ids=[item.id for item in items if not (item.id in session.discovered_evidence_ids)]
+    );
+}
+
+def:pub discover_session_evidence_api(session_id: str, evidence_id: str) -> bool {
+    if not (session_id in _ACTIVE_SESSIONS) { raise ValueError("Investigation session was not found."); }
+    session = _ACTIVE_SESSIONS[session_id];
+    if session.case_id != missing_prototype_case_data.player_case.case_id { raise ValueError("Investigation session does not match this case."); }
+    if not (evidence_id in [record.id for record in session.case_record.evidence]) { return False; }
+    action = InvestigationCommand(id="inspect-" + evidence_id + "-" + str(len(session.actions)), kind=InvestigationActionKind.INSPECT, actor_id="investigator", created_at="21:40", target_id=evidence_id);
+    transition = apply_investigation_action(session, action);
+    if not transition.accepted { return False; }
+    _ACTIVE_SESSIONS[session_id] = transition.session;
+    return True;
 }
 
 def:pub get_missing_prototype_known_facts() -> PlayerCaseBriefing {
