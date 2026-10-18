@@ -1,5 +1,5 @@
 import from lib.casezero_domain { CaseRecord, EvidenceItem, Suspect, TimelineEvent, InvestigationActionKind, InvestigationAction, InterviewMessage, Theory, AccusationResult }
-import from lib.missing_prototype_case { MissingPrototypeCaseData, PlayerCaseIntroduction, missing_prototype_case, missing_prototype_canonical_solution, missing_prototype_case_data }
+import from lib.missing_prototype_case { CaseLocation, MissingPrototypeCaseData, PlayerCaseIntroduction, missing_prototype_case, missing_prototype_canonical_solution, missing_prototype_case_data }
 import from lib.casezero_session { PlayerCaseBriefing, InvestigationSession, InvestigationCommand, InvestigationTransition, InvestigationStartReceipt, SuspectPublicProfile, EvidenceCollection }
 import from services.evidenceService { initial_evidence }
 
