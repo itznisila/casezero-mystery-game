@@ -10,6 +10,12 @@ import from services.caseAgents {
     interview_agent, evidence_analyst_agent, theory_coach_agent,
     verdict_explainer_agent, InterviewReply, AgentBrief, LeadPlan
 }
+import from services.gameApi {
+    get_case_board, visit_location, secure_evidence, open_timeline, ask_suspect,
+    ask_advisor, submit_theory, file_accusation, restart_investigation,
+    CaseBoard, InterviewTurn, ActionResult
+}
+import from services.advisors { list_advisors, AdvisorReply, AdvisorInfo }
 import from .components.CaseZeroLanding { CaseZeroLanding }
 import from .components.CaseBriefingScreen { CaseBriefingScreen }
 import from .components.SuspectOverviewScreen { SuspectOverviewScreen }
