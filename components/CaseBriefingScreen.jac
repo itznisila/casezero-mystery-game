@@ -28,7 +28,7 @@ def:pub CaseBriefingScreen() -> JsxElement {
         try {
             session_id = "case-001-" + str(new(Date).getTime());
             started_case = await start_missing_prototype_investigation(session_id);
-            window.location.href = "/evidence/" + started_case.session_id;
+            window.location.href = "/case/" + started_case.session_id;
         } except Exception {
             error_message = "The investigation could not be started. Your case briefing is still available.";
             starting = False;
