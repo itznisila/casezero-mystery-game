@@ -1,6 +1,6 @@
 import from "@jac/runtime" { Link, useParams, useNavigate }
 sv import from ..lib.casezero_domain { InvestigationActionKind }
-sv import from ..services.caseManager { InvestigationSession, InvestigationCommand, InvestigationDossier, get_investigation_session, get_investigation_dossier, submit_investigation_action, reset_missing_prototype_investigation, planNextAction }
+sv import from ..services.caseManager { InvestigationSession, InvestigationCommand, InvestigationDossier, get_investigation_session, get_investigation_dossier, submit_investigation_action, reset_missing_prototype_investigation }
 sv import from ..services.caseAgents { interview_agent, evidence_analyst_agent, theory_coach_agent, verdict_explainer_agent }
 
 
@@ -99,7 +99,7 @@ def:pub EvidenceScreen() -> JsxElement {
     events = dossier.record.timeline;
     evidence = dossier.evidence;
     discovered_count = len(session.discovered_evidence_ids);
-    next_action = planNextAction(session.discovered_evidence_ids, session.interviewed_suspect_ids);
+    next_action = "Review the evidence board, then question the suspects.";
 
     return <main className="min-h-svh bg-noir text-noir-ink">
         <header className="sticky top-0 z-20 border-b border-noir-line bg-noir px-4 py-3 sm:px-6"><div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3"><Link to="/" className="font-semibold tracking-[0.18em] text-primary">CASEZERO</Link><span className="font-mono text-xs text-noir-muted">CASE 001 · {str(discovered_count)} / 4 LEADS</span></div></header>
