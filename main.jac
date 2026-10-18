@@ -13,13 +13,15 @@ import from services.caseAgents {
 import from services.gameApi {
     get_case_board, visit_location, secure_evidence, open_timeline, ask_suspect,
     ask_advisor, submit_theory, file_accusation, restart_investigation,
-    CaseBoard, InterviewTurn, ActionResult
+    CaseBoard, InterviewTurn, ActionResult, LocationView, LockedItem,
+    RevealedStatement, TranscriptLine, AgentLogEntry
 }
+import from services.caseLogic { TimelineEntry, ContradictionFinding, LeadStatus }
 import from services.advisors { list_advisors, AdvisorReply, AdvisorInfo }
 import from .components.CaseZeroLanding { CaseZeroLanding }
 import from .components.CaseBriefingScreen { CaseBriefingScreen }
 import from .components.SuspectOverviewScreen { SuspectOverviewScreen }
-import from .components.EvidenceScreen { EvidenceScreen }
+import from .components.InvestigationRoom { InvestigationRoom }
 import ".styles.global.css";
 import from "@jac/runtime" { Router, Routes, Route }
 
@@ -29,6 +31,7 @@ def:pub app() -> JsxElement {
         <Route path="/" element={<CaseZeroLanding />} />
         <Route path="/briefing" element={<CaseBriefingScreen />} />
         <Route path="/suspects/:session_id" element={<SuspectOverviewScreen />} />
-        <Route path="/evidence/:session_id" element={<EvidenceScreen />} />
+        <Route path="/case/:session_id" element={<InvestigationRoom />} />
+        <Route path="/evidence/:session_id" element={<InvestigationRoom />} />
     </Routes></Router>;
 }
