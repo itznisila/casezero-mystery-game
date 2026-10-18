@@ -12,8 +12,6 @@ CaseZero is a detective-noir mystery game built entirely in Jac. The case is *Th
 
 ![Investigation dashboard with locations, evidence, and interview tabs](docs/screenshots/dashboard.png)
 
-![Interviewing a suspect and presenting evidence](docs/screenshots/interview.png)
-
 ## How to play
 
 You are the lead investigator. A prototype called Helix has vanished from a locked archive at the Northstar Research Facility, and nobody saw it leave. Your job is to work out what happened and accuse the right person, using records rather than hunches.
