@@ -4,12 +4,12 @@ This is a Jac 0.34.23 web application. Jac syntax is release-sensitive and easy 
 
 ## Project status and architecture
 
-The approved implementation is currently **Stage 1**. `main.jac` imports `.styles.global.css` and `.components.CaseZeroLanding`, then exports `def:pub app() -> JsxElement`. The landing component is the active route. Its Start Investigation button only shows a local acknowledgment; there is no playable investigation or connected server endpoint in the current route.
+The game is now playable end to end. `main.jac` registers the server endpoints from `services/gameApi.jac` and `services/advisors.jac` and routes `/case/:session_id` (also `/evidence/:session_id`) to `components/InvestigationRoom.jac`, the investigation dashboard. Fixed case facts live in `lib/` (`missing_prototype_case.jac`, `case_knowledge.jac`); deterministic rules live in `services/caseLogic.jac` and `services/caseManager.jac`; the four advisor agents live in `services/advisors.jac` and call a model only through `services/llmBridge.jac`. Without `GEMINI_API_KEY` every agent runs on rules. The case engine, never a model, decides the verdict.
 
 Folder and file responsibilities:
 
 - `main.jac`: web-app entry point and current single-page component wiring.
-- `components/`: application-level client components. The active screen is `CaseZeroLanding.jac`.
+- `components/`: application-level client components. `InvestigationRoom.jac` owns game state; the `*Panel.jac` files render one tab each.
 - `components/ui/`: generated/managed shadcn primitives. Import these; do not edit them by hand.
 - `services/`: server-side/domain service code when it is deliberately wired into the application. `caseService.jac` currently contains deterministic investigation starter logic but is not connected to `main.jac`.
 - `components/CaseZeroInvestigation.jac`: investigation starter UI, currently inactive and not connected to the entry route.
