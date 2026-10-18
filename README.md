@@ -1,6 +1,6 @@
 # CaseZero
 
-CaseZero is a detective-noir mystery experience built with Jac. The current application is **Stage 1**: a responsive landing page introducing the fictional case *The Missing Prototype*. Its Start Investigation button acknowledges the click; it does not begin a playable investigation. No AI agent, interview flow, or game backend is currently connected to the active route.
+CaseZero is a detective-noir mystery game built entirely in Jac. The case is *The Missing Prototype*: visit locations, secure records, interview three suspects, compare statements against evidence, build theories, and file an accusation. The case engine decides the verdict. Four advisor agents (Lead Detective, Suspect Interviewer, Evidence Analyst, Devil's Advocate) work on rules by default and can use Gemini when `GEMINI_API_KEY` is set on the server.
 
 ## Current architecture
 
