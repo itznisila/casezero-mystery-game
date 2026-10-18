@@ -1,9 +1,10 @@
 import from lib.casezero_domain { EvidenceItem, Theory, AccusationResult, InvestigationActionKind }
 import from lib.missing_prototype_case { missing_prototype_case }
 import from lib.case_knowledge { LOCATION_EVIDENCE, LOCATION_NOTES, PERSONAS }
-import from services.evidenceService { initial_evidence }
+import from lib.casezero_session {
+    InvestigationSession, InvestigationCommand, InvestigationStartReceipt, SuspectPublicProfile
+}
 import from services.caseManager {
-    InvestigationSession, InvestigationCommand, InvestigationStartReceipt, SuspectPublicProfile,
     get_investigation_session, submit_investigation_action, get_suspect_overview,
     discover_session_evidence_api, reset_missing_prototype_investigation
 }
@@ -151,7 +152,7 @@ def _location_name(location_id: str) -> str {
 }
 
 def _evidence_title(evidence_id: str) -> str {
-    for item in initial_evidence() {
+    for item in missing_prototype_case.public_record.evidence {
         if item.id == evidence_id { return item.title; }
     }
     return evidence_id;
@@ -173,7 +174,7 @@ def:pub get_case_board(session_id: str) -> CaseBoard {
     leads = get_lead_statuses(discovered, revealed, [f.id for f in findings]);
 
     secured: list[EvidenceItem] = [];
-    registry = initial_evidence();
+    registry = missing_prototype_case.public_record.evidence;
     for evidence_id in discovered {
         for item in registry {
             if item.id == evidence_id { secured.append(item); }
