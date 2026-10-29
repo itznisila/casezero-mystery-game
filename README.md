@@ -131,3 +131,10 @@ This is the original planning outline. The hackathon build delivers the playable
 28. Replayable case sessions and persistence hardening.
 29. End-to-end QA, security review, and performance pass.
 30. Release documentation and approved deployment preparation.
+
+
+## Troubleshooting
+- **My game progress disappeared:** sessions are held in memory, so they reset whenever the server restarts. This is expected.
+- **Do I need an API key?** No. The advisors run on built-in rules. The optional Gemini phrasing is currently switched off.
+- **Something looks broken after an edit:** run `jac check main.jac` first, as it checks the app entry and the Jac code it imports.
+- **Changes in `dist/` don't stick:** `dist/` is generated output, so edit the source `.jac` files instead.
