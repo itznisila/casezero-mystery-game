@@ -2,7 +2,7 @@
 
 > Built in Jac for AI Hackathon 2026 organized by Jaseci Labs, University of Moratuwa.
 
-**Check out our build:** [CaseZero](https://preview-jac-sbx-8c7ec9a8d4054ac388130f82f10d0bd1.jachammer.app)
+**Check out our build:** [CaseZero](https://preview-jac-sbx-a1e7943984a345848770336712e75528.jachammer.app/)
 
 CaseZero is a detective-noir mystery game built entirely in Jac. The case is *The Missing Prototype*: visit locations, secure records, interview three suspects, compare statements against evidence, build theories, and file an accusation. The case engine decides the verdict. Four advisor agents (Lead Detective, Suspect Interviewer, Evidence Analyst, Devil's Advocate) work on rules by default and can use Gemini when `GEMINI_API_KEY` is set on the server.
 
